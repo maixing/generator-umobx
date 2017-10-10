@@ -1,0 +1,31 @@
+{
+  "presets": [
+    "react",
+    "es2015",
+    "stage-0"
+  ],
+  "plugins": [
+    "transform-runtime",
+    "transform-decorators-legacy",
+    "react-hot-loader/babel",
+    ["import", { "libraryName": "antd", "style": "css" }]
+  ],
+  "env": {
+    "development": {
+    },
+    "production": {
+        "only": [
+          "app",
+          "webpack"
+        ],
+        "presets": [
+          [
+            "babili",
+            {
+              "mangle": false
+            }
+          ]
+        ],
+      }
+  }
+}
