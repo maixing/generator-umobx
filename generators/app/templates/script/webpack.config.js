@@ -32,8 +32,8 @@ module.exports = {
     },
     plugins: [
         new webpack.optimize.ModuleConcatenationPlugin(),
-        // new CopyWebpackPlugin([
-        //     { from: path.resolve(__dirname, "../resource"), to: path.resolve(__dirname, '../dist/resource') },
-        // ]),
+        new CopyWebpackPlugin([
+            { from: path.resolve(__dirname, "../resource"), to: path.resolve(__dirname, '../dist/resource') },
+        ]),
     ],
 };

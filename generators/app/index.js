@@ -15,6 +15,7 @@ var Reactpackage = yeoman.Base.extend({
         this.directory('dist', 'dist');
         this.directory('dll', 'dll');
         this.directory('script', 'script');
+        this.directory('resource', 'resource');
         this.copy('package.json', 'package.json');   //拷贝文件
         this.copy('.babelrc', '.babelrc');
         // this.copy('README.md', 'README.md');
