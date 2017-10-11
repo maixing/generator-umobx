@@ -27,7 +27,8 @@ var Reactpackage = yeoman.Base.extend({
     },
     install: function() {      //安装依赖
         this.installDependencies({
-            skipInstall: this.options['skip-install']
+            skipInstall: this.options['skip-install'],
+            bower: false,
         });
     },
     end: function() {
