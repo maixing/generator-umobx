@@ -52,6 +52,12 @@ module.exports = merge(webpackConfig, {
                 }, {
                     loader: 'less-loader'
                 }]
+            },
+            {
+                test: /\.(jpe?g|png|gif|svg|ico)$/,
+                use: [{
+                    loader: 'file-loader?name=images/img_[hash:8].[ext]' // creates style nodes from JS strings
+                }]
             }
         ]
     },

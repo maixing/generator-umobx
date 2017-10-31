@@ -5,8 +5,9 @@ let path = require('path');
 let app = express();
 let compiler = webpack(webpackConfig);
 let WebpackDevServer = require('webpack-dev-server');
+let compression = require('compression');
 
-
+app.use(compression());
 app.use(express.static(path.join(__dirname, '/')));
 app.use(require('webpack-dev-middleware')(compiler, {
     noInfo: true,
