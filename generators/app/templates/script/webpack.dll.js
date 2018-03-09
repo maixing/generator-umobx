@@ -10,7 +10,6 @@ module.exports = {
         app: [
             'antd',
             'babel-polyfill',
-            'bluebird',
             'classnames',
             'date-utils',
             'draft-js',
@@ -35,7 +34,6 @@ module.exports = {
             'react-draft-wysiwyg',
             'react-intl',
             'react-progress-2',
-            'react-resizable',
             'react-resize-observer',
             'react-router',
             'rx',
