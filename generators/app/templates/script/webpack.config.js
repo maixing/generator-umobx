@@ -14,6 +14,9 @@ module.exports = {
                 exclude: [/node_modules/,path.resolve(__dirname, "../plugin")],
                 use: {
                     loader: 'babel-loader',
+                    options:{
+                        cacheDirectory: true
+                    }
                 },
             },
             {
@@ -25,7 +28,7 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.optimize.ModuleConcatenationPlugin(),
+        new webpack.optimize.ModuleConcatenationPlugin({}),
         new CopyWebpackPlugin([
             { from: path.resolve(__dirname, "../resource"), to: path.resolve(__dirname, '../dist/resource') },
         ]),
