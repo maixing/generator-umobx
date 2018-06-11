@@ -12,14 +12,13 @@ var Reactpackage = yeoman.Base.extend({
     },
     generateBasic: function() {  //按照自己的templates目录自定义
         this.directory('src', 'src');    //拷贝目录
-        this.directory('dist', 'dist');
-        this.directory('dll', 'dll');
+        // this.directory('dist', 'dist');
+        // this.directory('dll', 'dll');
         this.directory('script', 'script');
         this.directory('resource', 'resource');
         this.copy('package.json', 'package.json');   //拷贝文件
         this.copy('.babelrc', '.babelrc');
         // this.copy('README.md', 'README.md');
-        this.copy('server.js', 'server.js');
     },
     generateClient: function() {
         this.sourceRoot(path.join(__dirname, 'templates'));
