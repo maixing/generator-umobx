@@ -159,7 +159,7 @@ module.exports = new Promise((resolve, reject) => {
       devConfig.plugins.push(
         new FriendlyErrorsPlugin({
           compilationSuccessInfo: {
-            messages: [`程序已经启动，访问地址为: http://localhost::${port}`]
+            messages: [`程序已经启动，访问地址为: http://localhost:${port}`]
           }
         })
       );
