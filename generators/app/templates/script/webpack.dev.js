@@ -60,21 +60,6 @@ const devConfig = merge(webpackConfig, {
         ]
       },
       {
-        test: /\.scss$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: "style-loader"
-          },
-          {
-            loader: "css-loader"
-          },
-          {
-            loader: "sass-loader"
-          }
-        ]
-      },
-      {
         test: /\.less$/,
         exclude: /node_modules/,
         use: [

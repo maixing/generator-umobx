@@ -1,22 +1,23 @@
 /**
  * Created by maixing on 2017/4/10.
  */
-import React from 'react';
-import {FormattedMessage} from 'react-intl';
-import './main.scss';
-export default class Main extends React.PureComponent {
+import { FormattedMessage } from "react-intl";
+import React from "react";
+
+import "./main.less";
+
+export default class Main extends React.Component {
     constructor() {
         super();
     }
-    componentDidMount() {
-    }
+    componentDidMount() {}
     render() {
         return (
             <div className="main-wrap">
                 <div className="hello">
-                    <FormattedMessage id="hello"></FormattedMessage>
+                    <FormattedMessage id="hello" />
                 </div>
             </div>
-        )
+        );
     }
 }
