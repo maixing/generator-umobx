@@ -1,0 +1,18 @@
+{
+    "fonts":"/resource/assets/fonts/font_148784_v4ggb6wrjmkotj4i",
+    "dev": {
+        "serverIp": "",
+        "serverPort": "",
+        "serverBaseUrl": "/",
+        "socketIp": "",
+        "socketPort": ""
+    },
+    "pro": {
+        "serverIp": "",
+        "serverPort": "",
+        "serverBaseUrl": "/test1",
+        "socketIp": "",
+        "socketPort": "",
+        "context":"/test"
+    }
+}

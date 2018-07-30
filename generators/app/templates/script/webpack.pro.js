@@ -11,8 +11,11 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPl
 const ParallelUglifyPlugin = require("webpack-parallel-uglify-plugin");
 
 require("babel-polyfill"); //兼容ie9,10配置
-let theme = require("../src/theme.js");
-
+let serverConfig = require('../resource/serverconfig/server.json');
+let themeConfig = require("../src/theme.js");
+let theme = themeConfig();
+//antd design字体本地部署
+theme['@icon-url'] = `"${serverConfig.pro.serverBaseUrl+serverConfig.pro.context+serverConfig.fonts}"`;
 let proConfig = {
     devtool: "false",
     output: {
@@ -77,7 +80,7 @@ let proConfig = {
                         {
                             loader: "less-loader",
                             options: {
-                                modifyVars: theme()
+                                modifyVars: theme
                             }
                         }
                     ]
