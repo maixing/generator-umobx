@@ -7,9 +7,6 @@ import React from "react";
 
 import "antd/dist/antd.less";
 import "font-awesome/css/font-awesome.min.css";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import "react-progress-2/main.css";
-
 import appstore from "./stores/AppStore";
 import cnLocale from "./local/zh-CN";
 import Routes from "./router/routes";

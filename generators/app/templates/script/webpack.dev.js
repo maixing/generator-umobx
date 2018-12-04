@@ -1,22 +1,26 @@
 /**
  * Created by maixing on 2017/6/10.
  */
-const merge = require("webpack-merge");
-const path = require("path");
-const webpack = require("webpack");
+const merge                 = require("webpack-merge");
+const path                  = require("path");
+const webpack               = require("webpack");
+const webpackConfig         = require("./webpack.config.js");
+const OpenBrowserPlugin     = require("open-browser-webpack-plugin");
+const HtmlWebpackPlugin     = require("html-webpack-plugin");
+const portfinder            = require("portfinder");
+const LessThemePlugin       = require("webpack-less-theme-plugin");
+const FriendlyErrorsPlugin  = require("friendly-errors-webpack-plugin");
+const HappyPack             = require("happypack");
+const os                    = require("os");
+const happyThreadPool       = HappyPack.ThreadPool({ size: os.cpus().length });
 
-const webpackConfig = require("./webpack.config.js");
-const OpenBrowserPlugin = require("open-browser-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const portfinder = require("portfinder");
-const LessThemePlugin = require("webpack-less-theme-plugin");
-const FriendlyErrorsPlugin = require("friendly-errors-webpack-plugin");
-
+require("babel-polyfill"); //兼容ie9,10配置
 
 const devConfig = merge(webpackConfig, {
-  devtool: "cheap-source-map", // inline-source-map.cheap-source-map
+  devtool: "cheap-eval-source-map",
+  mode: 'development',
   performance: {
-    hints: false // 性能提示[warning,error,false]
+    hints: false
   },
   output: {
     path: path.resolve(__dirname, "../dist"),
@@ -31,8 +35,8 @@ const devConfig = merge(webpackConfig, {
     historyApiFallback: true,
     hot: true,
     compress: true,
-    host: "localhost",
-    port: process.env.PORT,
+    host: "0.0.0.0",
+    port: parseInt(process.env.PORT),
     open: false,
     overlay: { warnings: false, errors: true },
     publicPath: "",
@@ -49,53 +53,41 @@ const devConfig = merge(webpackConfig, {
   module: {
     rules: [
       {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: 'happypack/loader?id=js'
+      },
+      {
         test: /\.css$/,
-        use: [
-          {
-            loader: "style-loader"
-          },
-          {
-            loader: "css-loader"
-          }
-        ]
+        use: 'happypack/loader?id=css'
       },
       {
         test: /\.less$/,
         exclude: /node_modules/,
-        use: [
-          {
-            loader: "style-loader"
-          },
-          {
-            loader: "css-loader"
-          },
-          {
-            loader: "less-loader"
-          }
-        ]
+        use: 'happypack/loader?id=less'
       },
       {
         test: /\.less$/,
         include: path.resolve(__dirname, "../node_modules/antd"),
-        use: [
-          {
-            loader: "style-loader"
-          },
-          {
-            loader: "css-loader"
-          },
-          {
-            loader: "less-loader"
-          }
-        ]
+        use: [{
+          loader: "style-loader"
+        },
+        {
+          loader: "css-loader"
+        },
+        {
+          loader: "less-loader"
+        }]
       },
       {
         test: /\.(jpe?g|png|gif|svg|ico)$/,
-        use: [
-          {
-            loader: "file-loader?name=images/img_[hash:8].[ext]" // creates style nodes from JS strings
-          }
-        ]
+        use: [{
+          loader: "file-loader?name=images/img_[hash:8].[ext]" // creates style nodes from JS strings
+        }]
+      },
+      {
+        test: /\.(ttf|eot|svg|woff|woff2)$/,
+        use: 'happypack/loader?id=font'
       }
     ]
   },
@@ -110,9 +102,8 @@ const devConfig = merge(webpackConfig, {
       production: false
     }),
     new webpack.NamedModulesPlugin(),
-    //dll配置
     new webpack.DllReferencePlugin({ context: __dirname, manifest: require("../dll/app-manifest.json") }),
-    new OpenBrowserPlugin({ url: "http://localhost:" + process.env.PORT.toString() }),
+    new OpenBrowserPlugin({ url: "http://localhost:" + process.env.PORT}),
     new HtmlWebpackPlugin({
       title: "ultra-react-webpack2-study",
       template: path.resolve(__dirname, "../src/_index.html"),
@@ -127,11 +118,65 @@ const devConfig = merge(webpackConfig, {
         removeStyleLinkTypeAttributes: true
       }
     }),
+    new HappyPack({
+      id: 'js',
+      threads: 4,
+      loaders: [{
+        loader: 'babel-loader?cacheDirectory=true'
+      }],
+      threadPool: happyThreadPool,
+      verbose:true
+    }),
+    new HappyPack({
+      id: 'css',
+      threads: 4,
+      loaders: [{
+        loader: "style-loader"
+      },
+      {
+        loader: "css-loader"
+      }],
+      threadPool: happyThreadPool,
+      verbose:false
+    }),
+    new HappyPack({
+      id: 'less',
+      threads: 4,
+      loaders: [{
+        loader: "style-loader"
+      },
+      {
+        loader: "css-loader"
+      },
+      {
+        loader: "less-loader"
+      }],
+      threadPool: happyThreadPool,
+      verbose:false
+    }),
+    new HappyPack({
+      id: 'image',
+      threads: 4,
+      loaders: [{
+        loader: "file-loader?name=images/img_[hash:8].[ext]" // creates style nodes from JS strings
+      }],
+      threadPool: happyThreadPool,
+      verbose:false
+    }),
+    new HappyPack({
+      id: 'font',
+      threads: 4,
+      loaders: [{
+        loader: 'file-loader?name=fonts/[name].[ext]' // creates style nodes from JS strings
+      }],
+      threadPool: happyThreadPool,
+      verbose:false
+    }),
     new LessThemePlugin({ theme: path.resolve(__dirname, "../src/theme.less") })
   ]
 });
 module.exports = new Promise((resolve, reject) => {
-  portfinder.basePort = process.env.PORT;
+  portfinder.basePort = parseInt(process.env.PORT);
   portfinder.getPort((err, port) => {
     if (err) {
       reject(err);
