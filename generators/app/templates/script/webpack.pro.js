@@ -13,7 +13,6 @@ let OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 let UglifyJsPlugin          = require("uglifyjs-webpack-plugin");
 let serverConfig            = require("../resource/serverconfig/server.json");
 let themeConfig             = require("../src/theme.js");
-let modulConfig             = require("../src/app/Modul.js");
 let theme                   = themeConfig();
 
 require("babel-polyfill");
@@ -30,6 +29,7 @@ let proConfig = {
         chunkFilename: "chunk/[name].[chunkhash:8].chunk.js"
     },
     entry: {
+        app: ["babel-polyfill", path.resolve(__dirname, "../src/index.js")]
     },
     resolve: {
         modules: [path.resolve(__dirname, "../node_modules"), path.resolve(__dirname, "../src"), __dirname],
@@ -186,7 +186,7 @@ let proConfig = {
                         beautify: false
                     },
                     compress: {
-                        drop_console: false,
+                        drop_console: true,
                         passes: 2
                     }
                 }
@@ -203,24 +203,18 @@ let proConfig = {
         }),
         new webpack.DefinePlugin({
             production: true
-        })
-    ]
-};
-modulConfig.map((item, index) => {
-    proConfig.entry[item.entry] = ["babel-polyfill", path.resolve(__dirname, "../src/app/" + item.entry + "Entry.js")];
-    proConfig.plugins.push(
+        }),
         new HtmlWebpackPlugin({
-            title: item.title,
-            template: path.resolve(__dirname, "../src/app/view/" + item.view + ".html"),
-            filename: "../dist/" + item.view + ".html",
-            inject: true,
-            chunks: [item.view, "vender", "commons"],
-            chunksSortMode: "auto",
+            title: "title",
+            template: path.resolve(__dirname, "../src/index.html"),
             favicon: path.resolve(__dirname, "../src/favicon.ico"),
+            inject: true,
+            chunks: ["app", "vender", "commons"],
+            chunksSortMode: "auto",
             minify: {
                 removeAttributeQuotes: true
             }
         })
-    );
-});
+    ]
+};
 module.exports = merge(webpackConfig, proConfig);
