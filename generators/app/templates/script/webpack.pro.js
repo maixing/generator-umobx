@@ -68,14 +68,6 @@ let proConfig = {
                 ]
             },
             {
-                test: /\.json$/,
-                type: "javascript/auto",
-                exclude: /node_modules/,
-                use: {
-                    loader: "json-loader"
-                }
-            },
-            {
                 test: /\.less$/,
                 include: path.resolve(__dirname, "../node_modules/antd"),
                 include: [

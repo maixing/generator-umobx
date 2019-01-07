@@ -1,6 +1,6 @@
 {
   "name": "generator-umobx",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "webpack4 mobx react antd",
   "main": "index.js",
   "scripts": {

@@ -10,6 +10,14 @@ module.exports = {
     entry: {},
     module: {
         rules: [
+            {
+                test: /\.json$/,
+                type: "javascript/auto",
+                exclude: /node_modules/,
+                use: {
+                    loader: "json-loader"
+                }
+            }
         ]
     },
     plugins: [
